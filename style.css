@@ -6,10 +6,9 @@
 	box-sizing: border-box;
 }
 
-@media screen and (max-width) {
-	:root {
-		--cell-size: 90px;
-	}
+:root {
+	--cell-size: 100px;
+	--mark-size: calc(var(--cell-size) * .9);
 }
 
 body {
@@ -36,7 +35,7 @@ a {
 }
 
 #playerMessage {
-	font-size: 1.5rem;
+   font-size: 1.5rem;
 	margin-bottom: 1rem;
 }
 
