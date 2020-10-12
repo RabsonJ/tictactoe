@@ -1,0 +1,154 @@
+*,
+*::before,
+*::after {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+:root {
+	--cell-size: 100px;
+	--mark-size: calc(var(--cell-size) * .9);
+}
+
+body {
+	background-color: #525558;
+	color: #f0ecf0;
+	font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+a {
+	text-decoration: none;
+}
+
+.container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin-top: 2rem;
+}
+
+#title {
+	font-size: 4rem;
+	margin-bottom: 3rem;
+	color: #d6b5aa;
+}
+
+#playerMessage {
+	margin-bottom: 1rem;
+}
+
+#reset {
+   background-color: rgb(214, 29, 29);
+   color: #fff;
+   margin-bottom: 1rem;
+}
+
+#board {
+	display: grid;
+	justify-content: center;
+	align-content: center;
+	justify-items: center;
+	align-items: center;
+	grid-template-columns: repeat(3, auto);
+}
+
+.cell {
+	height: var(--cell-size);
+	width: var(--cell-size);
+	background-color: #f0ecf0;
+	border: 1px solid #525558;
+	cursor: pointer;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: relative;
+}
+
+.cell.x {
+	background-color: #e0c7be;
+}
+
+.cell.circle {
+	background-color: #e3cd6d;
+}
+
+.cell.x,
+.cell.circle {
+	cursor: not-allowed;
+}
+
+.cell.x::before,
+.cell.x::after {
+	content: '';
+	position: absolute;
+	width: calc(var(--mark-size) * .15);
+	height: var(--mark-size);
+	background-color: #525558;
+}
+
+.cell.x::before {
+	transform: rotate(45deg);
+}
+
+.cell.x::after {
+	transform: rotate(-45deg);
+}
+
+.cell.circle::before,
+.cell.circle::after {
+	content: '';
+	position: absolute;
+	border-radius: 50%;
+}
+
+.cell.circle::before {
+	width: var(--mark-size);
+	height: var(--mark-size);
+	background-color: #525558;
+}
+
+.cell.circle::after {
+	width: calc(var(--mark-size) * .7);
+	height: calc(var(--mark-size) * .7);
+	background-color: #e3cd6d;
+}
+
+#resultContainer {
+   display: none;
+	position: fixed;
+	width: 100vw;
+	height: 100vh;
+	opacity: .8;
+	background-color: #000;
+	top: 0;
+	left: 0;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+#gameResult {
+	font-size: 2rem;
+	margin-bottom: 1rem;
+}
+
+.btn {
+   display: inline-block;
+	padding: .5rem 1rem;
+	text-transform: uppercase;
+	font-weight: 700;
+}
+
+.btn-restart {
+	background-color: #f0ecf0;
+	color: #000;
+}
+
+.repo {
+   margin-top: 2rem;
+   margin-bottom: 1rem;
+   color: #000;
+   font-size: 3rem;
+}
