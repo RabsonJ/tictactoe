@@ -19,6 +19,19 @@ const winningLogic = [
 	[ 2, 4, 6 ]
 ];
 
+const welcomeMessage = [
+	"Let's get playing!!!",
+	"Let's have some fun",
+	'Time to flex your brain',
+	'A good way to relax',
+	'Tic Tac Toe is a good game',
+	"Let's see how good you are",
+	'You think you got moves?',
+	"I hope you're ready for this",
+	'I bet this is not your first time',
+	'This is a pretty cool game'
+];
+
 initGame();
 
 cells.forEach((cell) => cell.addEventListener('click', handleClick, { once: true }));
@@ -45,13 +58,6 @@ function handleClick(e) {
 }
 
 function initGame() {
-	const welcomeMessage = [
-		"Let's get playing!!!",
-		'Lets have some fun',
-		'Time to flex your brain',
-		'A good way to relax'
-	];
-
 	const pickMessage = welcomeMessage[Math.floor(Math.random() * welcomeMessage.length)];
 	playerMessage.innerHTML = pickMessage;
 

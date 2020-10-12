@@ -6,9 +6,10 @@
 	box-sizing: border-box;
 }
 
-:root {
-	--cell-size: 100px;
-	--mark-size: calc(var(--cell-size) * .9);
+@media screen and (max-width) {
+	:root {
+		--cell-size: 90px;
+	}
 }
 
 body {
@@ -35,13 +36,14 @@ a {
 }
 
 #playerMessage {
+	font-size: 1.5rem;
 	margin-bottom: 1rem;
 }
 
 #reset {
-   background-color: rgb(214, 29, 29);
-   color: #fff;
-   margin-bottom: 1rem;
+	background-color: rgb(214, 29, 29);
+	color: #fff;
+	margin-bottom: 1rem;
 }
 
 #board {
@@ -115,7 +117,7 @@ a {
 }
 
 #resultContainer {
-   display: none;
+	display: none;
 	position: fixed;
 	width: 100vw;
 	height: 100vh;
@@ -135,7 +137,7 @@ a {
 }
 
 .btn {
-   display: inline-block;
+	display: inline-block;
 	padding: .5rem 1rem;
 	text-transform: uppercase;
 	font-weight: 700;
@@ -147,8 +149,8 @@ a {
 }
 
 .repo {
-   margin-top: 2rem;
-   margin-bottom: 1rem;
-   color: #000;
-   font-size: 3rem;
+	margin-top: 2rem;
+	margin-bottom: 1rem;
+	color: #000;
+	font-size: 3rem;
 }
