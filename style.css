@@ -39,6 +39,11 @@ a {
 	margin-bottom: 1rem;
 }
 
+#option > * {
+   margin-bottom: 1rem;
+   text-align: center;
+}
+
 #reset {
 	background-color: rgb(214, 29, 29);
 	color: #fff;
@@ -120,7 +125,7 @@ a {
 	position: fixed;
 	width: 100vw;
 	height: 100vh;
-	opacity: .8;
+	opacity: .95;
 	background-color: #000;
 	top: 0;
 	left: 0;
@@ -140,11 +145,6 @@ a {
 	padding: .5rem 1rem;
 	text-transform: uppercase;
 	font-weight: 700;
-}
-
-.btn-restart {
-	background-color: #f0ecf0;
-	color: #000;
 }
 
 .repo {

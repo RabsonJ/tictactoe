@@ -1,14 +1,15 @@
+const gameBoard = document.querySelector('#board');
 const cells = document.querySelectorAll('.cell');
 const playerMessage = document.querySelector('#playerMessage');
 const resultContainer = document.querySelector('#resultContainer');
 const gameResult = document.querySelector('#gameResult');
-const resetGame = document.querySelector('#reset').addEventListener('click', cleanCells);
-const restartBtn = document.querySelector('.btn-restart').addEventListener('click', cleanCells);
+const resetGame = document.querySelector('#reset');
+const option = document.querySelector('#option');
 
 const X_CLASS = 'x';
 const CIRCLE_CLASS = 'circle';
 
-const winningLogic = [
+const winCombos = [
 	[ 0, 1, 2 ],
 	[ 3, 4, 5 ],
 	[ 6, 7, 8 ],
@@ -19,73 +20,106 @@ const winningLogic = [
 	[ 2, 4, 6 ]
 ];
 
-const welcomeMessage = [
-	"Let's get playing!!!",
-	"Let's have some fun",
-	'Time to flex your brain',
-	'A good way to relax',
-	'Tic Tac Toe is a good game',
-	"Let's see how good you are",
-	'You think you got moves?',
-	"I hope you're ready for this",
-	'I bet this is not your first time',
-	'This is a pretty cool game'
-];
+resetGame.addEventListener('click', initGame);
+document.querySelector('#startBtn').addEventListener('click', startGame);
 
 initGame();
 
-cells.forEach((cell) => cell.addEventListener('click', handleClick, { once: true }));
-
-let currentPlayer = 'X';
+const cellsArray = Array.from(cells);
+cellsArray.forEach((cell) => cell.addEventListener('click', handleClick, { once: true }));
 
 function handleClick(e) {
-	const nextPlayer = currentPlayer === 'X' ? 'O' : 'X';
-	const currentClass = currentPlayer === 'X' ? X_CLASS : CIRCLE_CLASS;
-	e.target.classList.add(currentClass);
+	if (e.target.classList.contains(X_CLASS) || e.target.classList.contains(CIRCLE_CLASS)) {
+		e.target.removeEventListener('click', handleClick);
+	} else {
+		e.target.classList.add(humanPlayer);
 
-	const xs = Array.from(cells).filter((cell) => cell.classList.contains('x'));
-	const os = Array.from(cells).filter((cell) => cell.classList.contains('circle'));
-
-	if (xs.length + os.length === 9) {
-		drawGame();
+		if (checkWinner(cells, humanPlayer)) {
+			endGame('Congrats!!! You won');
+		} else {
+			takeTurns();
+		}
 	}
 
-	if (checkWinner(cells, currentClass)) {
-		endGame(currentClass);
+	if (emptyCells().length === 0 && !checkWinner(cells, X_CLASS) && !checkWinner(cells, CIRCLE_CLASS)) {
+		endGame("It's a draw");
+		return;
 	}
-	playerMessage.innerHTML = `${nextPlayer}, your turn!`;
-	currentPlayer = nextPlayer;
 }
 
+// Start Game
+let humanPlayer, aiPlayer;
+function startGame() {
+	const xChoice = document.querySelector('#x').checked;
+	const oChoice = document.querySelector('#o').checked;
+
+	if (xChoice || oChoice) {
+		gameBoard.style.display = 'grid';
+		resetGame.style.display = 'block';
+		option.style.display = 'none';
+	}
+
+	humanPlayer = xChoice ? X_CLASS : CIRCLE_CLASS;
+	aiPlayer = humanPlayer === X_CLASS ? CIRCLE_CLASS : X_CLASS;
+}
+
+// Original Game State
 function initGame() {
-	const pickMessage = welcomeMessage[Math.floor(Math.random() * welcomeMessage.length)];
-	playerMessage.innerHTML = pickMessage;
+	const xChoice = (document.querySelector('#x').checked = false);
+	const oChoice = (document.querySelector('#o').checked = false);
+
+	option.style.display = 'block';
+	gameBoard.style.display = 'none';
+	resetGame.style.display = 'none';
+	cells.forEach((cell) => (cell.classList.contains('x') ? cell.classList.remove('x') : cell.classList.remove('circle')));
+	playerMessage.innerHTML = "Let's have some fun";
 
 	resultContainer.style.display = 'none';
 }
 
-function cleanCells() {
-	cells.forEach((cell) => (cell.classList.contains('x') ? cell.classList.remove('x') : cell.classList.remove('circle')));
-	location.reload();
+// Switch to aiPlayer
+function takeTurns() {
+	cellsArray.forEach((cell) => cell.removeEventListener('click', handleClick));
+	if (emptyCells().length !== 0) {
+		setTimeout(() => {
+			const randEmptyCell = emptyCells()[Math.floor(Math.random() * emptyCells().length)];
+			// Add back eventListeners once aiPlayer has moved (after 1sec)
+			cellsArray.forEach((cell) => cell.addEventListener('click', handleClick, { once: true }));
+			randEmptyCell.classList.add(aiPlayer);
+			emptyCells();
+
+			// check if aiPlayer has won after making move
+			if (checkWinner(cells, aiPlayer)) {
+				endGame('Sorry! You lost');
+				return;
+			}
+			playerMessage.innerHTML = 'Your turn!';
+		}, 1000);
+
+		playerMessage.innerHTML = 'My turn!';
+	}
 }
 
-function drawGame() {
-	gameResult.innerHTML = `It's a draw`;
+function endGame(winMessage) {
+	gameResult.innerHTML = winMessage;
 	resultContainer.style.display = 'flex';
+	setTimeout(() => {
+		initGame();
+		resultContainer.style.display = 'none';
+	}, 2500);
 	return;
 }
 
-function endGame(currentClass) {
-	const winner = currentClass === 'x' ? 'X' : 'O';
-	gameResult.innerHTML = `${winner} has won!!!`;
-
-	resultContainer.style.display = 'flex';
-}
-
+// Has any winning condition been met?
 function checkWinner(cells, currentClass) {
-	return winningLogic.some((possible) => {
+	return winCombos.some((possible) => {
 		return possible.every((index) => {
 			return cells[index].classList.contains(currentClass);
 		});
 	});
+}
+
+// Util function to give us empty cells
+function emptyCells() {
+	return cellsArray.filter((cell) => !cell.classList.contains(X_CLASS) && !cell.classList.contains(CIRCLE_CLASS));
 }
